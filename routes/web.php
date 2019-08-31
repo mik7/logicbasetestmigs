@@ -12,5 +12,20 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/Create', 'ProfileController@create')->name('create');
+
+Route::post('/', 'ProfileController@store')->name('saveprofile');
+
+Route::get('/', 'ProfileController@show')->name('display');
+
+Route::get('/Edit/{id?}', 'ProfileController@edit')->name('edit');
+
+Route::get('/Delete', 'ProfileController@destroy')->name('destroy');
+
