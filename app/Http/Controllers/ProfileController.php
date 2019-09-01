@@ -14,8 +14,9 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $profiles = Profile::all();
-        return view('dashboard')->with('profiles', $profiles);
+        $profiles = Profile::latest()->paginate(4);
+        return view('profiles.dashboard', compact('profiles'))
+            ->with('i', (request()->input('page', 1) -1) * 4);
     }
 
     /**
@@ -25,7 +26,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        return view('create');
+        return view('profiles.create');
     }
 
     /**
@@ -59,8 +60,8 @@ class ProfileController extends Controller
         }
 
         $profiles->save();
-
-        return redirect()->route('display');
+        return redirect()->route('profiles.index')
+                        ->with('success', 'Profile Created Successfully');
     }
 
     /**
@@ -71,8 +72,7 @@ class ProfileController extends Controller
      */
     public function show(Profile $profile)
     {
-        $profiles = Profile::all();
-        return view('dashboard')->with('profiles', $profiles);
+        //
     }
 
     /**
@@ -81,10 +81,9 @@ class ProfileController extends Controller
      * @param  \App\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Profile $profile)
     {
-        $profiles = Profile::find($id);
-        return view('edit')->with('profiles', $profiles);
+        return view('profiles.edit', compact('profile'));
     }
 
     /**
@@ -96,21 +95,13 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $profiles = Profile::find($id);
+        $Profiles = Profile::find($id);
 
-        $profiles->Fname = $request->input('Fname');
-        $profiles->Lname = $request->input('Lname');
-        $profiles->Address = $request->input('Address');
-        $profiles->Pnumber = $request->input('Pnumber');
-        $profiles->Email = $request->input('Email');    
-        $oldprofilepic = $profiles->Image1;    
-        $profiles->Image1 = $request->input('Image1');
+        $oldprofilepic = $Profiles->Image1;
 
         if($request->hasfile('Image1'))
         {
             $file = $oldprofilepic;
-            $extension = $file->getClientOriginalExtension(); // Get Image Ext.
-            $filename = time() . "." . $extension;
             $file->delete('uploads/employee/', $filename);
             
             $file = $request->file('Image1');
@@ -121,11 +112,19 @@ class ProfileController extends Controller
         } else 
         {
             return $request;
-        }
+        }        
 
-        $profiles->save();
+        $Profiles->Fname = $request->get('Fname');
+        $Profiles->Lname = $request->get('Lname');
+        $Profiles->Address = $request->get('Address');
+        $Profiles->Pnumber = $request->get('Pnumber');
+        $Profiles->Email = $request->get('Email');
+        $Profiles->Image1 = $request->get('Image1');   
 
-        return redirect()->route('display');
+        $Profiles->save();
+
+        return redirect()->route('profiles.dashboard')
+                        ->with('success', 'Profile Successfully Updated!');
     }
 
     /**
@@ -134,8 +133,11 @@ class ProfileController extends Controller
      * @param  \App\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Profile $profile)
+    public function destroy($id)
     {
-        //
+        $profiles = Profile::find($id);
+        $profiles->delete($id);
+
+        return redirect()->route('profiles.index')->with('success', 'Profile Successfully Deleted!');
     }
 }

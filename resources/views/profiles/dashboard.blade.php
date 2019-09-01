@@ -2,6 +2,12 @@
 
 @section('content')
 
+@if ($message = Session::get('success'))
+    <div class="alert alert-success">
+        <h4>{{ $message }}</h4>
+    </div>
+@endif
+
 <div class="row">
 
     <div class="col-md-12">
@@ -10,7 +16,7 @@
             <h1>MAIN PAGE</h1>
         </div>
         <div class="pull-right">
-           <a href="{{route('create')}}" class="btn btn-lg btn-success">Register</a>
+           <a href="{{route('profiles.create')}}" class="btn btn-lg btn-success">Register</a>
         </div>
     </div>
 
@@ -19,6 +25,7 @@
 <table class="table table-bordered table-dark">
 
     <tr>
+        <th>No.</th>
         <th> ID</th>
         <th>Image Profile</th>        
         <th>First Name</th>
@@ -30,6 +37,7 @@
     </tr> 
     @foreach($profiles as $profile)
     <tr>
+        <th>{{ ++$i }}</th>
         <th>{{ $profile->id }}</th>
         <th>
             <img src="{{ asset('uploads/employee/' . $profile->Image1) }}" alt="Image" height="100px" width="100px">
@@ -39,10 +47,15 @@
         <th>{{ $profile->Address }}</th>
         <th>{{ $profile->Pnumber }}</th>
         <th>{{ $profile->Email }}</th>
-        <th>
-        <a href="/EditProfile/{{$profile->id}}" class="btn btn-info">Edit</a> 
-            <form action="{{route('destroy', $profile->id)}}" method="GET">
-                <button type="submit" class="btn btn-danger">Delete</button>                
+        <th>         
+            <form action="{{route('profiles.destroy', $profile->id)}}" method="POST">
+                
+                <a href="{{route('profiles.edit', $profile->id)}}" class="btn btn-info">Edit</a>
+                @csrf    
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Delete</button>  
+                
+                          
             </form>
         </th>
     </tr>
@@ -51,6 +64,6 @@
  
 </table>
 
-
+{!! $profiles->links() !!}
 
 @endsection

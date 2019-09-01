@@ -9,7 +9,7 @@
                 <div class="card-header">{{ __('Create New Profile') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('saveprofile') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('profiles.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <!-- FIRST NAME -->

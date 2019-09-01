@@ -12,22 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('profiles.dashboard');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/Create', 'ProfileController@create')->name('create');
-
-Route::post('/', 'ProfileController@store')->name('saveprofile');
+Route::resource('profiles', 'ProfileController');
 
 Route::get('/', 'ProfileController@show')->name('display');
-
-Route::get('/EditProfile/{id}', 'ProfileController@edit');
-
-Route::put('/updateprofile/{id}', 'ProfileController@update');
-
-Route::get('/Delete', 'ProfileController@destroy')->name('destroy');
 
