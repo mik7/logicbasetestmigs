@@ -48,15 +48,18 @@
         <th>{{ $profile->Pnumber }}</th>
         <th>{{ $profile->Email }}</th>
         <th>         
-            <form action="{{route('profiles.destroy', $profile->id)}}" method="POST">
+            <form action="{{route('profiles.destroy', $profile->id)}}" method="POST" class="delete">
                 
                 <a href="{{route('profiles.edit', $profile->id)}}" class="btn btn-info">Edit</a>
                 @csrf    
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete</button>  
-                
-                          
+                <button type="submit" class="btn btn-danger">Delete</button>              
             </form>
+            <script>
+                $(".delete").on("submit", function(){
+                    return confirm("Are you sure?");
+                });
+            </script>
         </th>
     </tr>
     @endforeach

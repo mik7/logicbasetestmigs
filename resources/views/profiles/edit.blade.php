@@ -10,7 +10,7 @@
 
                 <div class="card-body">
                     <form action="{{ route('profiles.update', $profile->id) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                        @csrf 
                         @method('PUT')
 
                         <input type="hidden" name="id" id="id" value="{{ $profile->id }}">  
@@ -103,7 +103,7 @@
                                 <input class="file-input" type="file" ref="file" name="Image1" value="{{ $profile->Image1 }}"  >
 
                                 <!-- Check if Image is Import -->
-                               @echo {{ $profiles->Image1 }}
+                               @echo {{ $profile->Image1 }}
                             </div>
                         </div>
 

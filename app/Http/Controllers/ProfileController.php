@@ -56,7 +56,7 @@ class ProfileController extends Controller
         } else 
         {
             return $request;
-            $profiles->Image1 = '';
+            $profiles->Image1 = 'no image';
         }
 
         $profiles->save();
