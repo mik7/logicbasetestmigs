@@ -97,33 +97,27 @@ class ProfileController extends Controller
     {
         $Profiles = Profile::find($id);
 
-        $oldprofilepic = $Profiles->Image1;
-
         if($request->hasfile('Image1'))
-        {
-            $file = $oldprofilepic;
-            $file->delete('uploads/employee/', $filename);
-            
+        {   
             $file = $request->file('Image1');
             $extension = $file->getClientOriginalExtension(); // Get Image Ext.
             $filename = time() . "." . $extension;
             $file->move('uploads/employee/', $filename);
-            $profiles->Image1 = $filename;
         } else 
         {
             return $request;
         }        
 
-        $Profiles->Fname = $request->get('Fname');
-        $Profiles->Lname = $request->get('Lname');
-        $Profiles->Address = $request->get('Address');
-        $Profiles->Pnumber = $request->get('Pnumber');
-        $Profiles->Email = $request->get('Email');
-        $Profiles->Image1 = $request->get('Image1');   
+        $Profiles->Fname = $request->input('Fname');
+        $Profiles->Lname = $request->input('Lname');
+        $Profiles->Address = $request->input('Address');
+        $Profiles->Pnumber = $request->input('Pnumber');
+        $Profiles->Email = $request->input('Email');
+        $Profiles->Image1 = $request->input('Image1');   
 
-        $Profiles->save();
+        $Profiles->update();
 
-        return redirect()->route('profiles.dashboard')
+        return redirect()->route('profiles.index')
                         ->with('success', 'Profile Successfully Updated!');
     }
 
