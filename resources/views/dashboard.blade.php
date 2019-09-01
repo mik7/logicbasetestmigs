@@ -40,9 +40,9 @@
         <th>{{ $profile->Pnumber }}</th>
         <th>{{ $profile->Email }}</th>
         <th>
-            <form action="{{route('destroy', $profile->id)}}" method="PUT">
-                <button type="submit" class="btn btn-danger">Delete</button>
-                <a href="{{route('edit', $profile->id)}}" class="btn btn-info">Edit</a> 
+        <a href="/EditProfile/{{$profile->id}}" class="btn btn-info">Edit</a> 
+            <form action="{{route('destroy', $profile->id)}}" method="GET">
+                <button type="submit" class="btn btn-danger">Delete</button>                
             </form>
         </th>
     </tr>

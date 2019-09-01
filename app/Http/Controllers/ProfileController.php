@@ -83,8 +83,8 @@ class ProfileController extends Controller
      */
     public function edit($id)
     {
-        $profiles = Profile::findOrfail($id);
-        return view('edit', compact('profiles'));
+        $profiles = Profile::find($id);
+        return view('edit')->with('profiles', $profiles);
     }
 
     /**
@@ -94,9 +94,38 @@ class ProfileController extends Controller
      * @param  \App\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Profile $profile)
+    public function update(Request $request, $id)
     {
-        //
+        $profiles = Profile::find($id);
+
+        $profiles->Fname = $request->input('Fname');
+        $profiles->Lname = $request->input('Lname');
+        $profiles->Address = $request->input('Address');
+        $profiles->Pnumber = $request->input('Pnumber');
+        $profiles->Email = $request->input('Email');    
+        $oldprofilepic = $profiles->Image1;    
+        $profiles->Image1 = $request->input('Image1');
+
+        if($request->hasfile('Image1'))
+        {
+            $file = $oldprofilepic;
+            $extension = $file->getClientOriginalExtension(); // Get Image Ext.
+            $filename = time() . "." . $extension;
+            $file->delete('uploads/employee/', $filename);
+            
+            $file = $request->file('Image1');
+            $extension = $file->getClientOriginalExtension(); // Get Image Ext.
+            $filename = time() . "." . $extension;
+            $file->move('uploads/employee/', $filename);
+            $profiles->Image1 = $filename;
+        } else 
+        {
+            return $request;
+        }
+
+        $profiles->save();
+
+        return redirect()->route('display');
     }
 
     /**

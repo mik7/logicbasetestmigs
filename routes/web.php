@@ -25,7 +25,9 @@ Route::post('/', 'ProfileController@store')->name('saveprofile');
 
 Route::get('/', 'ProfileController@show')->name('display');
 
-Route::get('/Edit/{id?}', 'ProfileController@edit')->name('edit');
+Route::get('/EditProfile/{id}', 'ProfileController@edit');
+
+Route::put('/updateprofile/{id}', 'ProfileController@update');
 
 Route::get('/Delete', 'ProfileController@destroy')->name('destroy');
 
