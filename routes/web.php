@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('profiles.dashboard');
+    return view('prof');
 });
 
 Auth::routes();
@@ -22,4 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('profiles', 'ProfileController');
 
 Route::get('/', 'ProfileController@show')->name('display');
+
 
